@@ -1,8 +1,8 @@
 {*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.1                                                |
+ | CiviCRM version 4.3                                                |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2011                                |
+ | Copyright CiviCRM LLC (c) 2004-2013                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -23,7 +23,7 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-{* this template is used for adding/editing location type  *}
+{* this template is used for adding/editing Event calendar settings *}
 <div class="form-item">
 <fieldset><legend>
 {ts}Events Calendar Settings{/ts}
@@ -37,12 +37,12 @@
     		<td>{$form.show_end_date.html} {$form.show_end_date.label}<br />
     		<span class="description">{ts}Will show the event with start and end dates on calendar.{/ts}</span></td>
     	</tr>
-     <tr class="crm-event-extension-show_past_event">
+      <tr class="crm-event-extension-show_past_event">
     		<td>&nbsp;</td>
     		<td>{$form.show_past_event.html} {$form.show_past_event.label}<br />
     		<span class="description">{ts}Will Show the Past events also.{/ts}</span></td>
     	</tr>
-     <tr class="crm-event-extension-event_is_public">
+      <tr class="crm-event-extension-event_is_public">
     		<td>&nbsp;</td>
     		<td>{$form.event_is_public.html} {$form.event_is_public.label}<br />
     		<span class="description">{ts}Will show the event which are public.{/ts}</span></td>
@@ -58,13 +58,12 @@
     		<span class="description">{ts}Will filter the events with start date less then defined number of months from current month.{/ts}</span></td>
     	</tr>
       {foreach from=$event_type item="label" key="eventname"}
-     <tr class="crm-event-extension-{$label}">
+      <tr class="crm-event-extension-{$label}">
     		<td>&nbsp;</td>
     		<td>{$form.$eventname.html} {$form.$eventname.label}<br /></td>
     	</tr> 
      {/foreach}
-  
- </table>
+  </table>
  
     <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="bottom"}</div>
 </div>
@@ -83,7 +82,5 @@ cj( function( ) {
     }
     });
   });
-   
- 
 </script>
 {/literal}

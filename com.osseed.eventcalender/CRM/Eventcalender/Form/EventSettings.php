@@ -2,9 +2,9 @@
 
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.1                                                |
+ | CiviCRM version 4.3                                                |
  +--------------------------------------------------------------------+
- | Copyright CiviCRM LLC (c) 2004-2011                                |
+ | Copyright CiviCRM LLC (c) 2004-2013                                |
  +--------------------------------------------------------------------+
  | This file is a part of CiviCRM.                                    |
  |                                                                    |
@@ -29,7 +29,7 @@
 /**
  *
  * @package CRM
- * @copyright CiviCRM LLC (c) 2004-2011
+ * @copyright CiviCRM LLC (c) 2004-2013
  * $Id$
  *
  */
@@ -37,7 +37,7 @@
 require_once 'CRM/Admin/Form.php';
 
 /**
- * This class generates form components for Location Type
+ * This class generates form for Event calendar settings
  * 
  */
 class CRM_Eventcalender_Form_EventSettings extends CRM_Admin_Form
@@ -46,49 +46,54 @@ class CRM_Eventcalender_Form_EventSettings extends CRM_Admin_Form
    protected $_types = array(); 
    function preProcess( ) {
        
-    parent::preProcess( );
-    $session = CRM_Core_Session::singleton();
-    $url = CRM_Utils_System::url('civicrm/eventcalendersettings');
-    $session->pushUserContext( $url );
-  }
-
-function setDefaultValues() {
- $defaults = parent::setDefaultValues();
+   parent::preProcess( );
+   $session = CRM_Core_Session::singleton();
+   $url = CRM_Utils_System::url('civicrm/eventcalendersettings');
+   $session->pushUserContext( $url );
+ }
  
- $config = CRM_Core_Config::singleton();
- require_once 'CRM/Event/PseudoConstant.php';
- $event_type = CRM_Event_PseudoConstant::eventType();
- if(isset($config->civicrm_events_event_types)) {
+/*
+** Set default all form values
+**
+*/
+function setDefaultValues() {
+  $defaults = parent::setDefaultValues();
+ 
+  $config = CRM_Core_Config::singleton();
+  //get all event types
+  require_once 'CRM/Event/PseudoConstant.php';
+  $event_type = CRM_Event_PseudoConstant::eventType();
+  if(isset($config->civicrm_events_event_types)) {
    foreach($config->civicrm_events_event_types as $key => $val) {
     $defaults[$key] = $key; 
    }
- } else {
+  } else {
     $config->civicrm_events_event_types = $event_type;
     foreach($event_type as $key => $val) {
       $defaults[$key] = $key; 
     }
   }
- if(isset($config->civicrm_events_event_past)) { 
-  $defaults['show_past_event'] = $config->civicrm_events_event_past;
- } else {
+  if(isset($config->civicrm_events_event_past)) { 
+    $defaults['show_past_event'] = $config->civicrm_events_event_past;
+  } else {
     $config->civicrm_events_event_past = 1;
     $defaults['show_past_event'] = 1;
    } 
- if(isset($config->civicrm_events_event_is_public)) { 
-  $defaults['event_is_public'] = $config->civicrm_events_event_is_public;
- } else {
+  if(isset($config->civicrm_events_event_is_public)) { 
+    $defaults['event_is_public'] = $config->civicrm_events_event_is_public;
+  } else {
     $config->civicrm_events_event_is_public = 1;
     $defaults['event_is_public'] = 1;
    } 
   if(isset($config->civicrm_events_event_end_date)) { 
-  $defaults['show_end_date'] = $config->civicrm_events_event_end_date;
- } else {
+    $defaults['show_end_date'] = $config->civicrm_events_event_end_date;
+  } else {
     $config->civicrm_events_event_end_date = 1; 
     $defaults['show_end_date'] = 1;
    } 
- if(isset($config->civicrm_events_event_months)) { 
-  $defaults['events_event_month'] = $config->civicrm_events_event_months;
- } else {
+  if(isset($config->civicrm_events_event_months)) { 
+    $defaults['events_event_month'] = $config->civicrm_events_event_months;
+  } else {
     $config->civicrm_events_event_months = 0;
     $defaults['events_event_month'] = 0;
    } 
@@ -96,51 +101,47 @@ function setDefaultValues() {
  return $defaults; 
 }
 
-    /**
-     * Function to build the form
-     *
-     * @return None
-     * @access public
-     */
-    public function buildQuickForm( ) 
-    {
-        parent::buildQuickForm( );
-        if ($this->_action & CRM_Core_Action::DELETE ) { 
-            return;
-        }
-        $this->add('text', 'show_event_from_month', ts('Show Events from how many months from current month '), array('size' => 50));
-        $this->addElement('checkbox', 'show_end_date', ts('Show End Date'));
-        $this->addElement('checkbox', 'event_is_public', ts('Is Public'));
-        $this->addElement('checkbox', 'events_event_month', ts('Events By Month'));
-        $this->addElement('checkbox', 'show_past_event', ts('Show Past Events'));
-        require_once 'CRM/Event/PseudoConstant.php';
-        $event_type = CRM_Event_PseudoConstant::eventType();
-        
-        foreach($event_type as $key => $val) {
-        $this->addElement('checkbox', $key, ts($val));
-        }
-        $this->assign('event_type', $event_type);
-        
-    }
+/**
+* Function to build the form
+*
+* @return None
+* @access public
+*/
+public function buildQuickForm( ) {
+  parent::buildQuickForm( );
+  if ($this->_action & CRM_Core_Action::DELETE ) { 
+    return;
+  }
+  $this->add('text', 'show_event_from_month', ts('Show Events from how many months from current month '), array('size' => 50));
+  $this->addElement('checkbox', 'show_end_date', ts('Show End Date'));
+  $this->addElement('checkbox', 'event_is_public', ts('Is Public'));
+  $this->addElement('checkbox', 'events_event_month', ts('Events By Month'));
+  $this->addElement('checkbox', 'show_past_event', ts('Show Past Events'));
+  require_once 'CRM/Event/PseudoConstant.php';
+  $event_type = CRM_Event_PseudoConstant::eventType();       
+  foreach($event_type as $key => $val) {
+    $this->addElement('checkbox', $key, ts($val));
+  }
+    $this->assign('event_type', $event_type);
+}
 
-    /**
-     * Function to process the form
-     *
-     * @access public
-     * @return None
-     */
-    public function postProcess() {
-     
-        if ( $this->_action & CRM_Core_Action::DELETE ) {
-            CDM_BAO_Item::del( $this->_id );
-            CRM_Core_Session::setStatus( ts('Selected Discount has been deleted.') );
-            return;
-        }
-      $params = $this->controller->exportValues($this->_name);
-      $config = CRM_Core_Config::singleton(); 
-      $configParams = array();
-      require_once 'CRM/Event/PseudoConstant.php';
-      $event_type = CRM_Event_PseudoConstant::eventType();
+/**
+* Function to process the form
+*
+* @access public
+* @return None
+*/
+public function postProcess() {     
+  if ( $this->_action & CRM_Core_Action::DELETE ) {
+    CDM_BAO_Item::del( $this->_id );
+    CRM_Core_Session::setStatus( ts('Selected Discount has been deleted.') );
+    return;
+  }
+    $params = $this->controller->exportValues($this->_name);
+    $config = CRM_Core_Config::singleton(); 
+    $configParams = array();
+    require_once 'CRM/Event/PseudoConstant.php';
+    $event_type = CRM_Event_PseudoConstant::eventType();
       foreach($event_type as $k => $v) {
         if(!array_key_exists($k,$params) ) {
           unset($event_type[$k]);
@@ -168,7 +169,7 @@ function setDefaultValues() {
          $configParams['civicrm_events_event_months'] = 0; 
        }
      CRM_Core_BAO_ConfigSetting::create($configParams);
-      CRM_Core_Session::setStatus(" ", ts('The value has been saved.'), "success" );
+     CRM_Core_Session::setStatus(" ", ts('The value has been saved.'), "success" );
    }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <extension key="com.osseed.eventcalender" type="module">
   <file>eventcalender</file>
-  <name>eventcalender</name>
-  <description>Show CiviCRM EventCalender</description>
+  <name>Event Calender</name>
+  <description>Show CiviCRM Events in Calender</description>
   <license>FIXME</license>
   <maintainer>
     <author>OSSeed</author>
@@ -14,7 +14,7 @@
   <compatibility>
     <ver>4.3</ver>
   </compatibility>
-  <comments>Show CiviCRM EventCalender</comments>
+  <comments>Show CiviCRM Event in Calender</comments>
   <civix>
     <namespace>CRM/Eventcalender</namespace>
   </civix>
